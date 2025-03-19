@@ -15,7 +15,7 @@ The code can be found in the repository, it can be downloaded as ZIP by clicking
 - 3dcomplete_model.ipynb
 - blocks.ipynb
   
-The figures directory contains png image files with the cross section representations and html files with the 3d models. Note that the html files in this directory are larger than GitHug supports, so to be viewed they must be downloaded and used in a local web browser
+The figures directory contains png image files with the cross section representations and html files with the 3d models. Note that the html files in this directory may be larger than GitHug supports, so to be viewed they must be downloaded and opened in a local web browser
 
 Download the code
 
