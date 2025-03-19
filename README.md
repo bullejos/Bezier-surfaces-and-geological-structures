@@ -30,7 +30,7 @@ How to run the notebook
 
 You can run the notebooks in Jupyter-Notebook or Visual Studio Code, you also need a Python kernel installed in your computer with all the libraries and packages installed.
 
-To successfully run the notebook, you need to locate it in the same folder as the data directory and the files .py. In order to do this, you may just extract the ZIP file with the whole repository. Then, launch Jupyter Notebook and select the notebook geologicalmap.ipynb. 
+To successfully run the notebook, you need to locate it in the same folder as the data directory and the files .py. In order to do this, you may just extract the ZIP file with the whole repository. Then, launch Jupyter Notebook and start with the notebook geologicalmap.ipynb. 
 
 You're now ready to go!
 
