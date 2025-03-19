@@ -22,7 +22,7 @@ Download the code
 The code can be found in the repository, it can be downloaded as ZIP by clicking in the green Code button. The necessary files are the five Jupyter notebook mentioned above. In these notebook we use libraries and packages like: plotlib, matplotli, pandas, numpy, sympy, etc. that must be imported at the begining. 
 
 
-We also use the files copernico.py https://github.com/carlosg-m/goose-lab and bezier.py from the repository https://github.com/torresjrjr/Bezier.py. This file is also hosted here.
+We also use the files copernico.py https://github.com/carlosg-m/goose-lab and bezier.py from the repository https://github.com/torresjrjr/Bezier.py. Those files are also hosted here.
 
 To reduce the code in the notebooks we have created files like: functions.py, topo.py, sector1.py, sector2.py, sector3.py and sector4.py that can be found in this repository
 
