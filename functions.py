@@ -414,7 +414,7 @@ def bs(lista):
     y=[]
     z=[]
     for l in lista:
-        ll=l[['X','Y','Z','t','tt']].to_numpy()
+        ll=l[['X','Y','Z']].to_numpy()
         lx=[x[0] for x in ll]
         ly=[x[1] for x in ll]
         lz=[x[2] for x in ll]
@@ -431,7 +431,7 @@ def bs2(lista):
     yfirst=[]
     zfirst=[]
     for l in lista:
-        ll=l[['X','Y','Z','t','tt']].to_numpy()
+        ll=l[['X','Y','Z']].to_numpy()
         lx=[x[0] for x in ll]
         ly=[x[1] for x in ll]
         lz=[x[2] for x in ll]
@@ -545,7 +545,7 @@ def bezierr(data,r,points):
     x=split_list(data["X"].to_list(),r)
     y=split_list(data["Y"].to_list(),r)
     z=split_list(data["Z"].to_list(),r)
-    return bezierSinpol(np.array(x),np.array(y),np.array(z),100,100,points) 
+    return bezierSinpol(np.array(x),np.array(y),np.array(z),20,20,points) 
 
 def acopler(data1,data2,r,points):
     x1=split_list(data1["X"].to_list(),r)
@@ -563,7 +563,7 @@ def acopler(data1,data2,r,points):
     z1l=[x[-1] for x in z1]
     z2f=[x[0] for x in z2]
     z=[[z1l[i],z2f[i]] for i in range(len(z1l))]
-    return bezierSinpol(np.array(x),np.array(y),np.array(z),100,100,points) 
+    return bezierSinpol(np.array(x),np.array(y),np.array(z),20,20,points) 
 
 
 def acople2r(data1,data2,r,s,points):
@@ -582,7 +582,7 @@ def acople2r(data1,data2,r,s,points):
     z1l=[x[-1] for x in z1]
     z2f=[x[0] for x in z2]
     z=[[z1l[i],z2f[i]] for i in range(len(z1l))]
-    return bezierSinpol(np.array(x),np.array(y),np.array(z),100,100,points) 
+    return bezierSinpol(np.array(x),np.array(y),np.array(z),20,20,points) 
 
 
 
@@ -596,7 +596,62 @@ def peguer(data1,data2,r,puntos):
     x=[x1[-1],x2[0]]
     y=[y1[-1],y2[0]]
     z=[z1[-1],z2[0]]
-    return bezierSinpol(np.array(x),np.array(y),np.array(z),100,100,puntos) 
+    return bezierSinpol(np.array(x),np.array(y),np.array(z),20,20,puntos) 
+
+def bsr(lista,points):
+    x=[]
+    y=[]
+    z=[]
+    for l in lista:
+        ll=l[['X','Y','Z']].to_numpy()
+        lx=[x[0] for x in ll]
+        ly=[x[1] for x in ll]
+        lz=[x[2] for x in ll]
+        x.append(lx)
+        y.append(ly)
+        z.append(lz)
+    return bezierSinpol(np.array(x),np.array(y),np.array(z),100,100,points) 
+
+def bs2r(lista,points):
+    xlast=[]
+    ylast=[]
+    zlast=[]
+    xfirst=[]
+    yfirst=[]
+    zfirst=[]
+    for l in lista:
+        ll=l[['X','Y','Z']].to_numpy()
+        lx=[x[0] for x in ll]
+        ly=[x[1] for x in ll]
+        lz=[x[2] for x in ll]
+        xfirst.append(lx[0])
+        yfirst.append(ly[0])
+        zfirst.append(lz[0])
+        xlast.append(lx[-1])
+        ylast.append(ly[-1])
+        zlast.append(lz[-1])
+    x=np.array([[xlast[i],xfirst[i+1]] for i in range(0,len(xfirst),2)])  
+    y=np.array([[ylast[i],yfirst[i+1]] for i in range(0,len(yfirst),2)]) 
+    z=np.array([[zlast[i],zfirst[i+1]] for i in range(0,len(zfirst),2)]) 
+    return bezierSinpol(np.array(x),np.array(y),np.array(z),100,100,points) 
+
+def bsrnear(lista,points,d):
+    x=[]
+    y=[]
+    z=[]
+    for l in lista:
+        ll=l[['X','Y','Z']].to_numpy()
+        lx=[x[0] for x in ll]
+        ly=[x[1] for x in ll]
+        lz=[x[2] for x in ll]
+        x.append(lx)
+        y.append(ly)
+        z.append(lz)
+    return bezierSnearpol(np.array(x),np.array(y),np.array(z),100,100,points,d) 
+
+
+
+# Superficies de interpolación
 
 def surface2(grid,n,metodo): #metodo='linear', 'cubic' o 'nearest' n=nº de puntos en el linespace
 
@@ -705,3 +760,108 @@ def hul_dat4(csv,nam,col,grupo,tr):
     pan=pd.read_csv(csv)
     pan0=pan[['X','Y','SAMPLE_1']].to_numpy()
     return hul_dat0(pan0,nam,col,grupo,tr)
+# Sinclinares y antisinclinares
+#curvas de bezier
+
+def basisFunction(n,i,t):
+    J=np.array(Ni(n,i)*(t**i)*(1-t)**(n-i))
+    return J
+
+def bzcurv(control,h,cells):
+    x=control['X']
+    y=control['Y']
+    z=[h for i in range(len(x))]
+    ncpts=len(x)
+    n=ncpts-1
+    i=0
+    t=np.linspace(0,1,cells)
+    b=[]
+    xBezier=np.zeros((1,cells))
+    yBezier=np.zeros((1,cells))
+    zBezier=np.zeros((1,cells))
+    for k in range(0,ncpts):
+        b.append(basisFunction(n,i,t))
+        xBezier=basisFunction(n,i,t)*x[k]+xBezier
+        yBezier=basisFunction(n,i,t)*y[k]+yBezier
+        zBezier=basisFunction(n,i,t)*z[k]+zBezier
+        i=i+1
+    return (xBezier,yBezier,zBezier)
+
+
+def bzcurv2(x,y,h,cells):
+    z=[h for i in range(len(x))]
+    ncpts=len(x)
+    n=ncpts-1
+    i=0
+    t=np.linspace(0,1,cells)
+    b=[]
+    xBezier=np.zeros((1,cells))
+    yBezier=np.zeros((1,cells))
+    zBezier=np.zeros((1,cells))
+    for k in range(0,ncpts):
+        b.append(basisFunction(n,i,t))
+        xBezier=basisFunction(n,i,t)*x[k]+xBezier
+        yBezier=basisFunction(n,i,t)*y[k]+yBezier
+        zBezier=basisFunction(n,i,t)*z[k]+zBezier
+        i=i+1
+    return (xBezier,yBezier,zBezier)
+
+def sinsymb(data,h,cells,gr,tr,z,nombre):
+    x=data['X']
+    y=data['Y']
+    l=[[x[1],x[8],x[5]],[y[1],y[8],y[5]],[h,h,h]]
+    t1=[[x[0],x[2],x[3]],[y[0],y[2],y[3]],[h,h,h]]
+    t2=[[x[4],x[6],x[7]],[y[4],y[6],y[7]],[h,h,h]]
+    xBezier,yBezier,zBezier=bzcurv2(l[0],l[1],h,cells)
+    return [go.Mesh3d(x=t1[0],y=t1[1],z=t1[2],
+                        alphahull=5, opacity=1, color='black',
+                        i = np.array([0]),
+                        j = np.array([1]),
+                        k = np.array([2]),
+                        name=nombre,
+                        legendgroup=gr,
+                        showlegend=tr),
+            go.Mesh3d(x=t2[0],y=t2[1],z=t2[2],
+                        alphahull=5, opacity=1, color='black',
+                        i = np.array([0]),
+                        j = np.array([1]),
+                        k = np.array([2]),
+                        legendgroup=gr,
+                        showlegend=False),
+            go.Scatter3d(x=xBezier[0],y=yBezier[0],z=zBezier[0],
+                         mode='lines',
+                         name='s1',
+                         legendgroup=gr,
+                         showlegend=False,
+                         line=dict(color='black', width=z))
+            ]
+
+def asinsymb(data,h,cells,gr,tr,z,nombre):
+    x=data['X']
+    y=data['Y']
+    l=[[x[3],x[8],x[7]],[y[3],y[8],y[7]],[h,h,h]]
+    t1=[[x[0],x[2],x[3]],[y[0],y[2],y[3]],[h,h,h]]
+    t2=[[x[4],x[6],x[7]],[y[4],y[6],y[7]],[h,h,h]]
+    xBezier,yBezier,zBezier=bzcurv2(l[0],l[1],h,cells)
+    return [go.Mesh3d(x=t1[0],y=t1[1],z=t1[2],
+                        alphahull=5, opacity=1, color='black',
+                        i = np.array([0]),
+                        j = np.array([1]),
+                        k = np.array([2]),
+                        name=nombre,
+                        legendgroup=gr,
+                        showlegend=tr),
+            go.Mesh3d(x=t2[0],y=t2[1],z=t2[2],
+                        alphahull=5, opacity=1, color='black',
+                        i = np.array([0]),
+                        j = np.array([1]),
+                        k = np.array([2]),
+                        legendgroup=gr,
+                        showlegend=False),
+            go.Scatter3d(x=xBezier[0],y=yBezier[0],z=zBezier[0],
+                         mode='lines',
+                         name='s1',
+                         legendgroup=gr,
+                         showlegend=False,
+                         line=dict(color='black', width=z))
+            ]
