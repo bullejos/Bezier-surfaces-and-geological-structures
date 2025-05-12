@@ -13,7 +13,7 @@ The code can be found in the repository, it can be downloaded as ZIP by clicking
 - crossed_sections.ipynb
 - 3dtopography.ipynb
 - 3dcomplete_model.ipynb
-- blocks.ipynb
+- blocks: 3d_detailed_block1.ipynb, 3d_detailed_block2.ipynb and 3d_detailed_block3.ipynb.
   
 The figures directory contains png image files with the cross section representations and html files with the 3d models. Note that the html files in this directory may be larger than GitHug supports, so to be viewed they must be downloaded and opened in a local web browser
 
