@@ -19,7 +19,7 @@ The figures directory contains png image files with the cross section representa
 
 Download the code
 
-The code can be found in the repository, it can be downloaded as ZIP by clicking in the green Code button. The necessary files are the five Jupyter notebook mentioned above. In these notebook we use libraries and packages like: plotlib, matplotli, pandas, numpy, sympy, etc. that must be imported at the begining. The full repository can be downloaded by clicking the v2 button, which is on the right side in the Releases section.
+The code can be found in the repository, it can be downloaded as ZIP by clicking in the green Code button. The necessary files are the five Jupyter notebook mentioned above. In these notebook we use libraries and packages like: plotlib, matplotli, pandas, numpy, sympy, etc. that must be imported at the begining. The full repository can be downloaded by clicking the V2 button, which is on the right side in the Releases section.
 
 
 We also use the files copernico.py https://github.com/carlosg-m/goose-lab and bezier.py from the repository https://github.com/torresjrjr/Bezier.py. Those files are also hosted here.
